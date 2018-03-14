@@ -46,3 +46,6 @@ war
 workflow-libs
 workspace
 jenkins/
+
+#Remove swp files
+*.swp
