@@ -1,19 +1,22 @@
-version: "1"
+version: "3"
 services:
-  web:
-    # replace username/repo:tag with your name and image details
-    image: jenkins/jenkins:lts
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          cpus: "0.4"
-          memory: 1024M
-      restart_policy:
-        condition: on-failure
+  jenkins:
+    image: openhmis/jenkins:lts
     ports:
-      - "8092:8080"
+      - "9003:8080"
     networks:
       - jenkinsnet
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-fk", "http://localhost:8080/"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+    jenkins_home:
+        external: true
 networks:
   jenkinsnet:
